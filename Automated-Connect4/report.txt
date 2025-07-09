@@ -1,0 +1,60 @@
+
+Class Design
+
+We have several main classes in this project:
+
+Scaffold class: This is the game board. It uses a 2D vector to keep track of the positions of the checkers. Each cell can be RED, BLACK, or VACANT. We also use a stack to remember every move made, so we can undo the last one.
+
+Player class: There are three types of players:
+
+    HumanPlayer: Asks the user for input from the console.
+
+    BadPlayer: Just picks the first available column from the left.
+
+    SmartPlayer: Uses a strategy (minimax) to try and win the game by simulating future moves.
+
+Game class: This class runs the actual game. It takes turns between players, shows the board, and announces the winner.
+
+I also made a helper file support.cpp with helper functions like checking the opponent's color and checking if the game is over, whcih are needed for the minimax function.
+
+SmartPlayer::chooseMove Design
+
+The SmartPlayer tries to find the best move using a method called minimax. It simulates the game multiple moves ahead and chooses the move that gives it the best chance of winning or stopping the opponent.
+
+Pseudocode for SmartPlayer Minimax
+
+function minimax(board, N, depth, currentColor, smartColor, bestMove):
+    if game is over:
+        return +score if smartColor won, -score if opponent won, 0 for tie
+
+    if currentColor is smart player:
+        bestScore = -big number
+        for each column:
+            if column is not full:
+                make move
+                score = minimax(next turn)
+                undo move
+                if score > bestScore:
+                    bestScore = score
+                    bestMove = column
+        return bestScore
+    else:
+        bestScore = +big number
+        for each column:
+            if column is not full:
+                make move
+                score = minimax(next turn)
+                undo move
+                if score < bestScore:
+                    bestScore = score
+                    bestMove = column
+        return bestScore
+
+Notes on Bugs or Problems
+
+The SmartPlayer works but may be slow if the board is big because it checks many possibilities.
+
+The minimax depth is not limited, so in a big board the game may take a while to decide.
+
+No known bugs that stop the game, but there's no special strategy like blocking traps or double threats.
+
